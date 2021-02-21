@@ -1,0 +1,24 @@
+{
+  "name": "ReaperBot",
+  "description": "Drop and Reap Nvidia and AMD Graphic Cards",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArdonnieIV/NeweggBot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArdonnieIV/NeweggBot/issues"
+  },
+  "homepage": "https://github.com/ArdonnieIV/NeweggBot#readme",
+  "dependencies": {
+    "async": "^3.2.0",
+    "dotenv": "^8.2.0",
+    "puppeteer": "^5.5.0"
+  }
+}
