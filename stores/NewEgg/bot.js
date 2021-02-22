@@ -180,7 +180,7 @@ module.exports = function(callback, input) {
           await report("check started");
           await page.waitForSelector(ccvInput);
           await page.waitForTimeout(10000);
-          await page.type(ccvInput, input.cv2);
+          await page.type(ccvInput, input.ccv);
         } catch (error) {
           await report("Error in CCV");
         }
