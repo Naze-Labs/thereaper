@@ -35,8 +35,8 @@ module.exports = function(callback, input) {
         } else if (popupContent1 !== -1) {
           console.log("we just found a pop up");
           await page.click("#Popup_Masks", { clickCount: 3 });
-          await page.click(".fa-times", { clickCount: 2 });
           await page.click(".modal-content > .modal-header > button.close");
+          await page.click(".fa-times", { clickCount: 2 });
           await page.waitForTimeout(1000);
           console.log("we closed a popup");
         } else if (popupContent2 !== -1) {
@@ -137,67 +137,121 @@ module.exports = function(callback, input) {
         let addToCartStep1 = "#ProductBuy > div.nav-row > div.nav-col > button";
         try {
           await page.waitForSelector(addToCartStep1);
+          await page.click(addToCartStep1, { clickCount: 3 });
+          await report("product available");
         } catch (error) {
           await report("Item not found");
           clearInterval(popOutChecker);
         }
-        await page.click(addToCartStep1, { clickCount: 3 });
-
-        await report("product available");
-
-        await page.waitForTimeout(3000);
 
         let addToCartStep2 =
           ".modal-dialog.modal-lg > div.modal-content > div.modal-body.auto-height > div.modal-footer > button.btn.btn-primary";
 
-        await page.waitForSelector(addToCartStep2);
-
-        await page.click(addToCartStep2, { clickCount: 3 });
-        console.log("product added to cart");
-
-        await page.waitForTimeout(3000);
-
-        await page.goto("https://secure.newegg.com/shop/cart", {
-          waitUntil: "load"
-        });
+        try {
+          await page.waitForSelector(addToCartStep2);
+          await page.click(addToCartStep2, { clickCount: 3 });
+          console.log("product added to cart");
+        } catch (error) {
+          await report({ error1: error });
+          clearInterval(popOutChecker);
+        }
 
         await page.waitForTimeout(3000);
+
+        await page.goto("https://secure.newegg.com/shop/cart");
+
+        // await page.waitForTimeout(20000);
 
         try {
-          let checkoutButton =
+          // Secure Checkout
+          let secureCheckout =
             "div.summary-actions > button.btn.btn-primary.btn-wide";
-          await page.waitForSelector(checkoutButton);
-          await page.click(checkoutButton, { clickCount: 3 });
+
+          // setTimeout(async () => {
+          await report("Ready To checkout 1");
+          await page.waitForSelector(secureCheckout);
+          await page.click(secureCheckout, { clickCount: 1, delay: 300 });
+          await report("Ready To checkout 2");
         } catch (error) {}
 
-        await report("Ready To checkout");
+        // await page.reload();
 
-        await page.waitFor(30000);
+        await page.waitForTimeout(15000);
 
+        console.log({ ui: page.url() });
+
+        try {
+          await page.waitForSelector(
+            "#app > div > section > div > div > form > div.row-inner > div.row-body > div > div:nth-child(2) > div > div.checkout-step-action > button",
+            { timeout: 1000 }
+          );
+          await page.click(
+            "#app > div > section > div > div > form > div.row-inner > div.row-body > div > div:nth-child(2) > div > div.checkout-step-action > button"
+          );
+          //  await page.waitForSelector(checkoutButton, { timeout: 50000 });
+
+          console.log({ r: r.toString() });
+          // await page.click(checkoutButton, { clickCount: 3, delay: 2 });
+          await report("Ready To checkout 3");
+        } catch (err) {}
+
+        await page.waitForTimeout(1000);
+
+        // Enter Security Code
         let ccvInput = ".retype-security-code > input.form-text.mask-cvv-4";
 
         try {
-          await report("check started");
           await page.waitForSelector(ccvInput);
-          await page.waitForTimeout(10000);
           await page.type(ccvInput, input.ccv);
+          await report("CCV has been entered");
         } catch (error) {
           await report("Error in CCV");
         }
 
-        let placeOrder = "div.summary-actions > #btnCreditCard";
-
+        // Review Order
         try {
-          await report("check started");
-          await page.waitForSelector(placeOrder);
-          await page.waitForTimeout(10000);
-          await page.click(placeOrder, { clickCount: 3 });
-          await report("Order has been placed succesfully");
+          await page.waitForSelector(
+            "#app > div > section > div > div > form > div.row-inner > div.row-body > div > div:nth-child(3) > div > div.checkout-step-action > button",
+            { timeout: 500 }
+          );
+          await page.click(
+            "#app > div > section > div > div > form > div.row-inner > div.row-body > div > div:nth-child(3) > div > div.checkout-step-action > button"
+          );
+        } catch (err) {}
+
+        await page.waitForTimeout(2000);
+
+        // Place Order
+        let placeOrder = "div.summary-actions > #btnCreditCard";
+        try {
+          await page.waitForSelector(placeOrder, { timeout: 500 });
+          await page.click(placeOrder);
+          await report("Order have been placed");
           status = "success";
-        } catch (error) {
-          await report("Order was not successfully placed");
+        } catch (err) {
           status = "failed";
         }
+
+        // try {
+        //   await page.waitForSelector("#SubmitOrder", { timeout: 1500 });
+        //   await page.click("#SubmitOrder", { timeout: 500 });
+        //   try {
+        //     await page.waitForSelector("#SubmitOrder", { timeout: 1500 });
+        //   } catch (err) {}
+        // } catch (err) {}
+
+        // try {
+        //   await report("check started");
+        //   await page.waitForSelector(placeOrder);
+        //   await page.waitForTimeout(10000);
+        //   await page.click(placeOrder, { clickCount: 3 });
+
+        //   await report("Order has been placed succesfully");
+        //   status = "success";
+        // } catch (error) {
+        //   await report("Order was not successfully placed");
+        //   status = "failed";
+        // }
       } catch (error) {
         await report("Error occured in the checkout process");
         status = "failed";
@@ -210,8 +264,7 @@ module.exports = function(callback, input) {
         page.close();
         browser.close();
         callback(null, { ...input, status });
-        // clearInterval(popOutChecker);
-      }, 120000);
+      }, 10000);
     }
   });
 };

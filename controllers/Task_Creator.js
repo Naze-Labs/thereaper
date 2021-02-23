@@ -3,6 +3,7 @@ let async = require("async");
 
 module.exports = ({ body }, res) => {
   let { inputs } = body;
+  console.log({ inputs });
   if (Array.isArray(inputs) === false) {
     console.log("No input");
     return res.status(400).json({
