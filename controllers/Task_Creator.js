@@ -22,17 +22,19 @@ module.exports = ({ body }, res) => {
             EggBot(callback, input);
           }
       );
-      async.parallel(multiBots, function(err, result) {
-        if (err) {
-          return res.status(400).json({
-            message: "Internal Error"
-          });
-        } else {
-          console.log(result);
-          res.status(200).json({
-            result
-          });
-        }
+      setTimeout(() => {
+        async.parallel(multiBots, function(err, result) {
+          if (err) {
+            return res.status(400).json({
+              message: "Internal Error"
+            });
+          } else {
+            console.log(result);
+            res.status(200).json({
+              result
+            });
+          }
+        });
       });
       // }
     } catch (error) {

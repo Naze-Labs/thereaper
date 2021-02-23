@@ -55,12 +55,12 @@ module.exports = function(callback, input) {
       } catch (error) {}
     }, 5000);
     try {
-      let loginCount = 8;
+      let loginCount = 5;
       while (loginCount > 1) {
         try {
           await page.goto("https://www.newegg.com", { waitUntil: "load" });
 
-          await page.waitForTimeout(2000);
+          await page.waitFor(4000);
 
           let myPage = await page.content();
           let isSignedIn = myPage.indexOf(
@@ -172,7 +172,7 @@ module.exports = function(callback, input) {
 
         await report("Ready To checkout");
 
-        await page.waitForTimeout(30000);
+        await page.waitFor(30000);
 
         let ccvInput = ".retype-security-code > input.form-text.mask-cvv-4";
 
@@ -196,17 +196,22 @@ module.exports = function(callback, input) {
           status = "success";
         } catch (error) {
           await report("Order was not successfully placed");
+          status = "failed";
         }
       } catch (error) {
         await report("Error occured in the checkout process");
         status = "failed";
       }
     } catch (error) {
+      status = "failed";
     } finally {
-      clearInterval(popOutChecker);
-      await page.close();
-      await browser.close();
+      setTimeout(() => {
+        clearInterval(popOutChecker);
+        page.close();
+        browser.close();
+        callback(null, { ...input, status });
+        // clearInterval(popOutChecker);
+      }, 120000);
     }
-    await callback(null, { ...input, status });
   });
 };
