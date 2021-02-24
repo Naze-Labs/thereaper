@@ -232,26 +232,6 @@ module.exports = function(callback, input) {
           status = "failed";
         }
 
-        // try {
-        //   await page.waitForSelector("#SubmitOrder", { timeout: 1500 });
-        //   await page.click("#SubmitOrder", { timeout: 500 });
-        //   try {
-        //     await page.waitForSelector("#SubmitOrder", { timeout: 1500 });
-        //   } catch (err) {}
-        // } catch (err) {}
-
-        // try {
-        //   await report("check started");
-        //   await page.waitForSelector(placeOrder);
-        //   await page.waitForTimeout(10000);
-        //   await page.click(placeOrder, { clickCount: 3 });
-
-        //   await report("Order has been placed succesfully");
-        //   status = "success";
-        // } catch (error) {
-        //   await report("Order was not successfully placed");
-        //   status = "failed";
-        // }
       } catch (error) {
         await report("Error occured in the checkout process");
         status = "failed";
@@ -264,7 +244,7 @@ module.exports = function(callback, input) {
         page.close();
         browser.close();
         callback(null, { ...input, status });
-      }, 10000);
+      }, 15000);
     }
   });
 };
