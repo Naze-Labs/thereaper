@@ -15,6 +15,10 @@ Routes(router);
 
 app.use("/api/v1", router);
 
+app.get("*", (req, res) => {
+  res.send("Page not found");
+});
+
 const port = process.env.PORT || 5000;
 
 let server = app.listen(port, err => {

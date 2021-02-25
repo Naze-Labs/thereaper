@@ -10,15 +10,11 @@
     "type": "git",
     "url": "git+https://github.com/ArdonnieIV/NeweggBot.git"
   },
-
-  
-
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ArdonnieIV/NeweggBot/issues"
   },
-
   "homepage": "https://github.com/ArdonnieIV/NeweggBot#readme",
   "dependencies": {
     "async": "^3.2.0",
