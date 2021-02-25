@@ -9,8 +9,9 @@ module.exports = function(callback, input) {
     await report("Started");
     let status;
     const browser = await puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox"]
+      headless: false,
+      product: "chrome",
+      defaultViewport: { width: 1150, height: 768 }
     });
     const page = await browser.newPage();
     await page.setCacheEnabled(false);
@@ -230,6 +231,7 @@ module.exports = function(callback, input) {
         } catch (err) {
           status = "failed";
         }
+
       } catch (error) {
         await report("Error occured in the checkout process");
         status = "failed";
