@@ -17,6 +17,7 @@
     "url": "https://github.com/ArdonnieIV/NeweggBot/issues"
   },
   "homepage": "https://github.com/ArdonnieIV/NeweggBot#readme",
+  
   "dependencies": {
     "async": "^3.2.0",
     "cors": "^2.8.5",
