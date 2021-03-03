@@ -4,7 +4,8 @@ const cors = require("cors");
 const router = express.Router();
 const { Routes } = require("./routes/index");
 const path = require("path");
-
+const immediateRun = require("./ImmediateRun");
+let inputs = require("./server/inputs.json");
 require("dotenv").config();
 
 app.use(cors());
@@ -19,6 +20,7 @@ app.get("*", (req, res) => {
   res.send("Page not found");
 });
 
+immediateRun(inputs);
 
 const port = process.env.PORT || 5000;
 

@@ -10,7 +10,7 @@ module.exports = function(callback, input) {
     let status;
     const browser = await puppeteer.launch({
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"]
+      args: ["--no-sandbox"]
     });
     const page = await browser.newPage();
     await page.setCacheEnabled(false);
@@ -71,7 +71,7 @@ module.exports = function(callback, input) {
             await report("Checking for Item");
             await page
               .waitForTimeout(30000)
-              .then(() => console.log("url am here"));
+              .then(() => console.log("Still checking"));
             break;
           } else {
             await report("Begin login process");
@@ -81,7 +81,7 @@ module.exports = function(callback, input) {
                 waitUntil: "load"
               }
             );
-
+            await page.waitForTimeout(10000);
             await page.click(
               ".display-flex.justify-content-flex-end .nav-complex:nth-child(1) a"
             );
