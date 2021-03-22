@@ -19,6 +19,7 @@ module.exports = inputs => {
             EggBot(callback, input);
           }
       );
+      
       setTimeout(() => {
         async.parallel(multiBots, function(err, result) {
           if (err) {

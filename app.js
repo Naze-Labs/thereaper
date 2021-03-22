@@ -6,6 +6,7 @@ const { Routes } = require("./routes/index");
 const path = require("path");
 const immediateRun = require("./ImmediateRun");
 let inputs = require("./server/inputs.json");
+let mysql = require("mysql");
 require("dotenv").config();
 
 app.use(cors());
@@ -20,9 +21,26 @@ app.get("*", (req, res) => {
   res.send("Page not found");
 });
 
-immediateRun(inputs);
+// immediateRun(inputs);
 
 const port = process.env.PORT || 5000;
+
+// module.exports = mySqlConnection = mysql.createConnection({
+//   user: "",
+//   host: "",
+//   password: "",
+//   database: ""
+// });
+
+// mySqlConnection.connect(err => {
+//   if (!err) console.log("Connected to DB");
+//   else {
+//     console.log(
+//       "An Error Occured Connecting to DB",
+//       JSON.stringify(err, undefined, 2)
+//     );
+//   }
+// });
 
 let server = app.listen(port, err => {
   if (err) {
