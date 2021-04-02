@@ -2,11 +2,16 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const router = express.Router();
-const { Routes } = require("./routes/index");
 const path = require("path");
-const immediateRun = require("./ImmediateRun");
-let inputs = require("./server/inputs.json");
-let mysql = require("mysql");
+const mongoose = require("mongoose");
+const Routes = require("./routes/index");
+
+const { CronJob } = require("./controllers/ReleaseController");
+// const runNow = require("./samples/runNow");
+// const inputs = require("./samples/input.json");
+
+let { DB } = require("./config");
+
 require("dotenv").config();
 
 app.use(cors());
@@ -21,33 +26,17 @@ app.get("*", (req, res) => {
   res.send("Page not found");
 });
 
-// immediateRun(inputs);
+// runNow(inputs);(
+CronJob()
 
-const port = process.env.PORT || 5000;
+DB = DB || process.env.DB_CONNECT;
+mongoose
+  .connect(DB, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+  })
+  .then(() => console.log("mongo started"));
 
-// module.exports = mySqlConnection = mysql.createConnection({
-//   user: "",
-//   host: "",
-//   password: "",
-//   database: ""
-// });
-
-// mySqlConnection.connect(err => {
-//   if (!err) console.log("Connected to DB");
-//   else {
-//     console.log(
-//       "An Error Occured Connecting to DB",
-//       JSON.stringify(err, undefined, 2)
-//     );
-//   }
-// });
-
-let server = app.listen(port, err => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("App running");
-  }
-});
+const server = app.listen(8001, () => console.log("Server running"));
 
 server.timeout = 0;

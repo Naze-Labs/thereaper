@@ -1,9 +1,8 @@
-const EggBot = require("./stores/NewEgg/bot");
+const EggBot = require("../stores/NewEgg/bot");
 let async = require("async");
 
-
-
 module.exports = inputs => {
+  
   console.log({ inputs });
   if (Array.isArray(inputs) === false) {
     console.log("No input");

@@ -1,9 +1,10 @@
-const EggBot = require("./../stores/NewEgg/bot");
+const EggBot = require("../stores/NewEgg/bot");
 let async = require("async");
 
 module.exports = ({ body }, res) => {
-  let { inputs } = body;
+  let { inputs, countdown } = body;
   console.log({ inputs });
+
   if (Array.isArray(inputs) === false) {
     console.log("No input");
     return res.status(400).json({
@@ -20,7 +21,12 @@ module.exports = ({ body }, res) => {
       let multiBots = inputs.map(
         input =>
           function(callback) {
-            EggBot(callback, input);
+            let input_with_countdown = {
+              ...input,
+              countdown
+            };
+            console.log({ countdown });
+            EggBot(callback, input_with_countdown);
           }
       );
       setTimeout(() => {

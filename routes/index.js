@@ -1,6 +1,9 @@
-const TaskRoutes = require("./Task_Routes");
-const GetResultRoutes = require("./Get_Tasks");
+const TaskRouter = require("./TaskRouter");
+const UserRouter = require("./UserRouter");
+const ReleaseRouter = require("./ReleaseRouter");
 
-module.exports.Routes = router => {
-  TaskRoutes(router), GetResultRoutes(router);
+module.exports = router => {
+  TaskRouter(router);
+  UserRouter(router);
+  ReleaseRouter(router);
 };

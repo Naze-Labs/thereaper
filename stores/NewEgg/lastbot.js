@@ -1,4 +1,5 @@
 const puppeteer = require("puppeteer");
+let { CronJob } = require("cron");
 async function report(log) {
   currentTime = new Date();
   console.log(currentTime.toString().split("G")[0] + ": " + log);
@@ -7,11 +8,10 @@ async function report(log) {
 module.exports = function(callback, input) {
   setTimeout(async () => {
     await report("Started");
-    let status;
+    let status, task;
     const browser = await puppeteer.launch({
-      headless: false,
-      product: "chrome",
-      defaultViewport: { width: 1150, height: 768 }
+      headless: false
+      // args: ["--no-sandbox"]
     });
     const page = await browser.newPage();
     await page.setCacheEnabled(false);
@@ -34,9 +34,15 @@ module.exports = function(callback, input) {
           console.log("we closed a popup");
         } else if (popupContent1 !== -1) {
           console.log("we just found a pop up");
-          await page.click("#Popup_Masks", { clickCount: 3 });
+          await page.click(
+            "#Popup_Masks"
+            // , { clickCount: 3 }
+          );
           await page.click(".modal-content > .modal-header > button.close");
-          await page.click(".fa-times", { clickCount: 2 });
+          await page.click(
+            ".fa-times"
+            // , { clickCount: 2 }
+          );
           await page.waitForTimeout(1000);
           console.log("we closed a popup");
         } else if (popupContent2 !== -1) {
@@ -56,11 +62,15 @@ module.exports = function(callback, input) {
     }, 5000);
     try {
       let loginCount = 5;
-      while (loginCount > 1) {
+      while (loginCount > 0) {
         try {
           await page.goto("https://www.newegg.com", { waitUntil: "load" });
 
           await page.waitFor(4000);
+
+          // await page.goto("https://www.newegg.com", { waitUntil: "load" });
+
+          // await page.waitFor(10000);
 
           let myPage = await page.content();
           let isSignedIn = myPage.indexOf(
@@ -68,11 +78,11 @@ module.exports = function(callback, input) {
           );
 
           if (isSignedIn === -1) {
-            await page.goto(input.item_url);
-            await report("Checking for Item");
-            await page
-              .waitForTimeout(30000)
-              .then(() => console.log("url am here"));
+            // await page.goto(input.item_url);
+            // await report("Checking for Item");
+            // await page
+            //   .waitForTimeout(30000)
+            //   .then(() => console.log("Still checking"));
             break;
           } else {
             await report("Begin login process");
@@ -82,10 +92,11 @@ module.exports = function(callback, input) {
                 waitUntil: "load"
               }
             );
-
+            // await page.waitForTimeout(10000);
             await page.click(
               ".display-flex.justify-content-flex-end .nav-complex:nth-child(1) a"
             );
+
             await page.waitForSelector("#labeled-input-signEmail", {
               waitUntil: "load"
             });
@@ -96,7 +107,10 @@ module.exports = function(callback, input) {
             await page.waitForSelector("#signInSubmit");
 
             setTimeout(async () => {
-              await page.click("#signInSubmit", { timeout: 500 });
+              await page.click(
+                "#signInSubmit"
+                // , { timeout: 500 }
+              );
             }, 12000);
 
             await page.click("#signInSubmit", { timeout: 500 });
@@ -114,18 +128,14 @@ module.exports = function(callback, input) {
 
             await page.waitForTimeout(2000);
 
-            await page.goto(input.item_url);
-
-            await report("Checking for Item");
-
-            await page.waitForTimeout(20000);
             break;
           }
         } catch (error) {
           await report("Failed to Login");
-          if (loginCount < 0) {
+          if (loginCount === 1) {
             await report("Failed to Login");
             clearInterval(popOutChecker);
+            status = "failed";
             break;
           }
         } finally {
@@ -133,11 +143,30 @@ module.exports = function(callback, input) {
         }
       }
 
+      // if (status !== "failed")
+      //   task = new CronJob(
+      //     "17 16 * * *",
+      //     async () => {
       try {
+        let countdown = input.countdown ? input.countdown : 2000;
+
+        console.log("Countdown started", countdown);
+
+        await page.waitForTimeout(countdown);
+
+        await page.goto(input.item_url);
+
+        await report("Checking for Item");
+
+        await page.waitForTimeout(10000);
+
         let addToCartStep1 = "#ProductBuy > div.nav-row > div.nav-col > button";
         try {
           await page.waitForSelector(addToCartStep1);
-          await page.click(addToCartStep1, { clickCount: 3 });
+          await page.click(
+            addToCartStep1
+            //  { clickCount: 3 }
+          );
           await report("product available");
         } catch (error) {
           await report("Item not found");
@@ -149,14 +178,17 @@ module.exports = function(callback, input) {
 
         try {
           await page.waitForSelector(addToCartStep2);
-          await page.click(addToCartStep2, { clickCount: 3 });
+          await page.click(
+            addToCartStep2
+            // , { clickCount: 3 }
+          );
           console.log("product added to cart");
         } catch (error) {
           await report({ error1: error });
           clearInterval(popOutChecker);
         }
 
-        await page.waitForTimeout(3000);
+        // await page.waitForTimeout(3000);
 
         await page.goto("https://secure.newegg.com/shop/cart");
 
@@ -170,7 +202,10 @@ module.exports = function(callback, input) {
           // setTimeout(async () => {
           await report("Ready To checkout 1");
           await page.waitForSelector(secureCheckout);
-          await page.click(secureCheckout, { clickCount: 1, delay: 300 });
+          await page.click(
+            secureCheckout
+            // , { clickCount: 1, delay: 300 }
+          );
           await report("Ready To checkout 2");
         } catch (error) {}
 
@@ -206,6 +241,7 @@ module.exports = function(callback, input) {
           await report("CCV has been entered");
         } catch (error) {
           await report("Error in CCV");
+          status = "failed";
         }
 
         // Review Order
@@ -227,24 +263,40 @@ module.exports = function(callback, input) {
           await page.waitForSelector(placeOrder, { timeout: 500 });
           await page.click(placeOrder);
           await report("Order have been placed");
-          status = "success";
+          if (status === "failed") {
+            status = "failed";
+          } else {
+            status = "success";
+          }
         } catch (err) {
           status = "failed";
         }
-
       } catch (error) {
         await report("Error occured in the checkout process");
         status = "failed";
       }
+      // await task.stop();
+      // },
+      () => {
+        setTimeout(() => {
+          clearInterval(popOutChecker);
+          page.close();
+          browser.close();
+          callback(null, { ...input, status });
+        }, 15000);
+      };
+      // );
+      // task.start();
     } catch (error) {
       status = "failed";
     } finally {
-      setTimeout(() => {
-        clearInterval(popOutChecker);
-        page.close();
-        browser.close();
-        callback(null, { ...input, status });
-      }, 15000);
+      if (status === "failed")
+        setTimeout(() => {
+          clearInterval(popOutChecker);
+          page.close();
+          browser.close();
+          callback(null, { ...input, status: "failed" });
+        }, 15000);
     }
   });
 };

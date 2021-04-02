@@ -20,7 +20,7 @@ module.exports = function(callback, input) {
         let homePageContent = await page.content();
         let popupContent = homePageContent.indexOf("popup-wrapper");
         let popupContent1 = homePageContent.indexOf("Popup_Masks");
-        let popupContent2 = homePageContent.indexOf(
+        let popupContent2 = homePageContent.indexOf( 
           `<i class="fas fa-times"></i>`
         );
         let popupContent3 = homePageContent.indexOf(
