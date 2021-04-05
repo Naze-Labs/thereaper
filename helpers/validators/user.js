@@ -4,7 +4,7 @@ module.exports.registerValidator = joi.object().keys({
   email: joi.string().email(),
   phone: joi.number().min(11),
   userType: joi.string(),
-  password: joi.string().min(8)
+  password: joi.string().min(6)
 });
 
 module.exports.loginValidator = joi.object().keys({

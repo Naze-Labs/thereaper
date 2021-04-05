@@ -1,11 +1,11 @@
 require('dotenv').config()
 
 module.exports = {
-  APP_SECRET,
   SITE_URL,
+  APP_SECRET,
   DB,
-  NODE_ENV,
   PORT,
+  NODE_ENV,
   EMAIL,
   PASSWORD,
   Client_ID,

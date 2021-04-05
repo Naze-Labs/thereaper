@@ -27,16 +27,16 @@ app.get("*", (req, res) => {
 });
 
 // runNow(inputs);(
-CronJob()
+CronJob();
 
-DB = DB || process.env.DB_CONNECT;
+DB = DB || process.env.DB;
 mongoose
   .connect(DB, {
     useUnifiedTopology: true,
-    useNewUrlParser: true
+    useNewUrlParser: true,
   })
   .then(() => console.log("mongo started"));
 
-const server = app.listen(8001, () => console.log("Server running"));
+const server = app.listen(8000, () => console.log("Server running"));
 
 server.timeout = 0;

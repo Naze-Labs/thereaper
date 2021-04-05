@@ -2,7 +2,7 @@ const EggBot = require("./../stores/NewEgg/bot");
 let async = require("async");
 const {
   createTaskValidator,
-  updateTaskValidator
+  updateTaskValidator,
 } = require("./../helpers/validators/tasks");
 const Task = require("../models/Task");
 module.exports = {
@@ -20,18 +20,18 @@ module.exports = {
           email,
           password,
           item_url,
-          ccv
+          ccv,
         };
         let newTask = new Task(task);
         let saveTask = await newTask.save();
         await res.status(200).json({
           msg: "task has been created",
-          data: saveTask
+          data: saveTask,
         });
       } catch (error) {
         console.log({ error });
         await res.status(401).json({
-          msg: "task creation unsuccessful"
+          msg: "task creation unsuccessful",
         });
       }
   },
@@ -50,12 +50,12 @@ module.exports = {
         let saveTask = await task.save();
         await res.status(200).json({
           msg: "task has been updated",
-          data: saveTask
+          data: saveTask,
         });
       } catch (error) {
         res.status(400).send({
           msg: "An error occured",
-          err: error
+          err: error,
         });
       }
   },
@@ -64,12 +64,12 @@ module.exports = {
     try {
       await Task.findByIdAndDelete(req.params.id);
       await res.status(200).json({
-        msg: "task has been deleted"
+        msg: "task has been deleted",
       });
     } catch (error) {
       res.status(400).json({
         msg: "An error occured",
-        err: error
+        err: error,
       });
     }
   },
@@ -79,12 +79,12 @@ module.exports = {
       let data = await Task.find({ release: req.params.id });
       await res.status(200).json({
         msg: "task retrieved successfully",
-        data
+        data,
       });
     } catch (error) {
       res.status(400).json({
         msg: "An error occured",
-        error
+        error,
       });
     }
   },
@@ -99,37 +99,37 @@ module.exports = {
     if (Array.isArray(inputs) === false) {
       console.log("No input");
       return res.status(400).json({
-        message: "Inputs can not be empty"
+        message: "Inputs can not be empty",
       });
     } else if (inputs.length < 1) {
       console.log("less than 1");
       return res.status(400).json({
-        message: "Inputs can not be empty"
+        message: "Inputs can not be empty",
       });
     } else
       try {
         // if (store === "EggBot") {
         let multiBots = inputs.map(
-          input =>
-            function(callback) {
+          (input) =>
+            function (callback) {
               let input_with_countdown = {
                 ...input,
-                countdown
+                countdown,
               };
               console.log({ countdown });
               EggBot(callback, input_with_countdown);
             }
         );
         setTimeout(() => {
-          async.parallel(multiBots, function(err, result) {
+          async.parallel(multiBots, function (err, result) {
             if (err) {
               return res.status(400).json({
-                message: "Internal Error"
+                message: "Internal Error",
               });
             } else {
               console.log(result);
               res.status(200).json({
-                result
+                result,
               });
             }
           });
@@ -138,8 +138,8 @@ module.exports = {
       } catch (error) {
         console.log({ error });
         return res.status(400).json({
-          message: "Internal Error"
+          message: "Internal Error",
         });
       }
-  }
+  },
 };

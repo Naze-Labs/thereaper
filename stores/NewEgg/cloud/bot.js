@@ -15,9 +15,6 @@ module.exports = function (callback, input) {
     });
     const page = await browser.newPage();
     await page.setCacheEnabled(false);
-    let dueDate = input.dueDate;
-    let min = new Date(dueDate).getMinutes();
-    let hour = new Date(dueDate).getHours();
     let popOutChecker = setInterval(async () => {
       try {
         let homePageContent = await page.content();
@@ -148,7 +145,7 @@ module.exports = function (callback, input) {
 
       if (status !== "failed")
         task = new CronJob(
-          `${min + 1} ${hour} * * *`,
+          "17 16 * * *",
           async () => {
             try {
               let countdown = input.countdown ? input.countdown : 2000;
