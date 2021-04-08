@@ -20,6 +20,7 @@ module.exports = (inputs) => {
           console.log({ inputWithIndex });
           Machine(callback, inputWithIndex);
         }
+        
     );
     setTimeout(() => {
       async.parallel(multiMachines, function (err, result) {
