@@ -26,6 +26,7 @@ app.get("*", (req, res) => {
   res.send("Page not found");
 });
 
+
 // runNow(inputs);(
 CronJob();
 
