@@ -24,6 +24,7 @@
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "bull": "^3.22.0",
     "cors": "^2.8.5",
     "cron": "^1.8.2",
     "cross-env": "^7.0.3",
@@ -35,8 +36,10 @@
     "moment": "^2.29.1",
     "mongoose": "^5.12.3",
     "node-cron": "^3.0.0",
+    "node-redis-pubsub": "^5.0.0",
     "nodemailer": "^6.5.0",
     "nodemon": "^2.0.7",
-    "puppeteer": "^5.5.0"
+    "puppeteer": "^5.5.0",
+    "redis": "^3.1.0"
   }
 }

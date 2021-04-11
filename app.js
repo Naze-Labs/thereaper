@@ -5,10 +5,12 @@ const router = express.Router();
 const path = require("path");
 const mongoose = require("mongoose");
 const Routes = require("./routes/index");
+let listner = require('./helpers/utils/listner')
 
 const { CronJob } = require("./controllers/ReleaseController");
 // const runNow = require("./samples/runNow");
 // const inputs = require("./samples/input.json");
+
 
 let { DB } = require("./config");
 
@@ -26,7 +28,6 @@ app.get("*", (req, res) => {
   res.send("Page not found");
 });
 
-
 // runNow(inputs);(
 CronJob();
 
@@ -38,6 +39,6 @@ mongoose
   })
   .then(() => console.log("mongo started"));
 
-const server = app.listen(8000, () => console.log("Server running"));
+const server = app.listen(8001, () => console.log("Server running"));
 
 server.timeout = 0;

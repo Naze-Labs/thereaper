@@ -1,4 +1,4 @@
-require('dotenv').config()
+require("dotenv").config();
 
 module.exports = {
   SITE_URL,
@@ -9,7 +9,10 @@ module.exports = {
   EMAIL,
   PASSWORD,
   Client_ID,
-  Client_secret
-} = process.env
+  Client_secret,
+  REDIS_PORT,
+  REDIS_HOST,
+  PASSWORD,
+} = process.env;
 
 // module.exports = IN_PROD = NODE_ENV === "development"
