@@ -1,16 +1,16 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const router = express.Router();
+const Router = express.Router();
+const { router } = require("bull-board");
 const path = require("path");
 const mongoose = require("mongoose");
 const Routes = require("./routes/index");
-let listner = require('./helpers/utils/listner')
+const { Listener } = require("./helpers/utils/listener");
 
 const { CronJob } = require("./controllers/ReleaseController");
 // const runNow = require("./samples/runNow");
 // const inputs = require("./samples/input.json");
-
 
 let { DB } = require("./config");
 
@@ -20,15 +20,16 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-Routes(router);
+Routes(Router);
 
-app.use("/api/v1", router);
+app.use("/board", router);
+app.use("/api/v1", Router);
 
 app.get("*", (req, res) => {
   res.send("Page not found");
 });
 
-// runNow(inputs);(
+Listener();
 CronJob();
 
 DB = DB || process.env.DB;

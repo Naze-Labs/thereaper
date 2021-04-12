@@ -36,6 +36,10 @@ const TaskModel = new Schema(
       type: Number,
       trim: true,
     },
+    machine: {
+      type: Number,
+      trim: true,
+    },
     store: {
       type: String,
       trim: true,

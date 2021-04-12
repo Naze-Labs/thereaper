@@ -25,6 +25,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "bull": "^3.22.0",
+    "bull-board": "^1.5.1",
     "cors": "^2.8.5",
     "cron": "^1.8.2",
     "cross-env": "^7.0.3",

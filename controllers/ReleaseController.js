@@ -5,53 +5,56 @@ const cron = require("node-cron");
 
 const {
   updateReleaseValidator,
-  createReleaseValidator
+  createReleaseValidator,
 } = require("./../helpers/validators/release");
 const { StartBotForRelease } = require("./../helpers/utils/watcher");
+const e = require("express");
 module.exports = {
   async CreateRelease(req, res) {
-    try {
-      let { _id } = req.decoded;
-      let { name, description, store, countdown, dueDate } = req.body;
-
-      let release = {
-        creator: _id,
-        name,
-        description,
-        store,
-        countdown,
-        dueDate
-      };
-      let newRelease = new Release(release);
-      let saveRelease = await newRelease.save();
-      await res.status(200).json({
-        msg: "release has been created",
-        data: newRelease,
-        saveRelease
-      });
-    } catch (error) {
-      console.log({ error });
-      await res.status(401).json({
-        msg: "release creation unsuccessful"
-      });
-    }
-  },
-
-  async GetUserRelease(req, res) {
-
+    let { error } = createReleaseValidator.validate(req.body);
+    if (error) res.status(400).json({ msg: error.details[0].message });
+    else
       try {
         let { _id } = req.decoded;
-        let release = await Release.find({ creator: _id });
+        let { name, description, store, countdown, dueDate } = req.body;
+        let release = {
+          creator: _id,
+          name,
+          description,
+          store,
+          countdown,
+          dueDate,
+          status: "pending",
+        };
+        let newRelease = new Release(release);
+        let saveRelease = await newRelease.save();
         await res.status(200).json({
-          msg: "successful",
-          data: release
+          msg: "release has been created",
+          data: newRelease,
+          saveRelease,
         });
       } catch (error) {
         console.log({ error });
         await res.status(401).json({
-          msg: "release creation unsuccessful"
+          msg: "release creation unsuccessful",
         });
       }
+  },
+
+  async GetUserRelease(req, res) {
+    try {
+      let { _id } = req.decoded;
+      let release = await Release.find({ creator: _id });
+      await res.status(200).json({
+        msg: "successful",
+        data: release,
+      });
+    } catch (error) {
+      console.log({ error });
+      await res.status(401).json({
+        msg: "release creation unsuccessful",
+      });
+    }
   },
 
   async UpdateRelease(req, res) {
@@ -69,12 +72,12 @@ module.exports = {
         let saveRelease = await release.save();
         await res.status(200).json({
           msg: "release has been updated",
-          data: saveRelease
+          data: saveRelease,
         });
       } catch (error) {
         res.status(400).send({
           msg: "An error occured",
-          error
+          error,
         });
       }
   },
@@ -85,12 +88,12 @@ module.exports = {
       await Release.findByIdAndDelete(req.params.id);
       await Task.deleteMany({ creator: _id });
       await res.status(200).json({
-        msg: "releases has been deleted"
+        msg: "releases has been deleted",
       });
     } catch (error) {
       res.status(400).send({
         msg: "An error occured",
-        error
+        error,
       });
     }
   },
@@ -98,5 +101,5 @@ module.exports = {
     cron.schedule("* * * * *", () => {
       StartBotForRelease();
     });
-  }
+  },
 };
