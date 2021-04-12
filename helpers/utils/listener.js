@@ -53,6 +53,7 @@ module.exports.Listener = () => {
     "machine4",
     "machine5",
   ]);
+  
 
   client.on("message", (channel, message) => {
     let result = resultFormat([{ input: { inputs: JSON.parse(message) } }]);
