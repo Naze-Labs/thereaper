@@ -13,6 +13,13 @@ module.exports.Listener = () => {
       host: REDIS_HOST,
     },
   });
+
+  machineQueue1
+    .getJob("machine1")
+    .then((data) => console.log({ data }))
+    .catch((err) => {
+      console.log({ err });
+    });
   let machineQueue2 = new Bull(`machine2`, {
     redis: {
       port: REDIS_PORT,
@@ -53,7 +60,6 @@ module.exports.Listener = () => {
     "machine4",
     "machine5",
   ]);
-  
 
   client.on("message", (channel, message) => {
     let result = resultFormat([{ input: { inputs: JSON.parse(message) } }]);

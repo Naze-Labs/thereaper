@@ -1,5 +1,7 @@
 const EggBot = require("./../stores/NewEgg/bot");
 let async = require("async");
+const Address = require("./../models/Address");
+const Card = require("../models/Card");
 const {
   createTaskValidator,
   updateTaskValidator,
@@ -13,7 +15,15 @@ module.exports = {
     else
       try {
         let { _id } = req.decoded;
-        let { email, password, item_url, ccv } = req.body;
+        let {
+          email,
+          password,
+          item_url,
+          ccv,
+          product_name,
+          card,
+          size,
+        } = req.body;
         let task = {
           creator: _id,
           release,
@@ -21,6 +31,16 @@ module.exports = {
           password,
           item_url,
           ccv,
+          product_name,
+          card: {
+            "friendlyName": "Visa",
+            "cardNumber": "4242424242424242",
+            "nameOnCard": "John Smith",
+            "expirationMonth": "01",
+            "expirationYear": "22",
+            "securityCode": "123"
+          },
+          size,
         };
         let newTask = new Task(task);
         let saveTask = await newTask.save();
@@ -37,12 +57,13 @@ module.exports = {
   },
 
   async UpdateTask(req, res) {
-    let { email, password, item_url, ccv } = req.body;
+    let { email, password, item_url, ccv, product_name } = req.body;
     let { error } = updateTaskValidator.validate(req.body);
     if (error) res.status(400).json({ msg: error.details[0].message });
     else
       try {
         let task = await Task.findById(req.params.id);
+        task.product_name = (await product_name) || task.product_name;
         task.password = (await password) || task.password;
         task.email = (await email) || task.email;
         task.item_url = (await item_url) || task.item_url;
@@ -74,9 +95,24 @@ module.exports = {
     }
   },
 
-  async getAllTask(req, res) {
+  async getReleaseTask(req, res) {
     try {
       let data = await Task.find({ release: req.params.id });
+      await res.status(200).json({
+        msg: "task retrieved successfully",
+        data,
+      });
+    } catch (error) {
+      res.status(400).json({
+        msg: "An error occured",
+        error,
+      });
+    }
+  },
+
+  async getAllTask(req, res) {
+    try {
+      let data = await Task.find({});
       await res.status(200).json({
         msg: "task retrieved successfully",
         data,

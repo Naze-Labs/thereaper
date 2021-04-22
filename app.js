@@ -29,7 +29,7 @@ app.get("*", (req, res) => {
   res.send("Page not found");
 });
 
-Listener();
+// Listener();
 CronJob();
 
 DB = DB || process.env.DB;

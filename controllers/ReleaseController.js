@@ -41,6 +41,22 @@ module.exports = {
       }
   },
 
+  async GetAllRelease(req, res) {
+    try {
+      let { _id } = req.decoded;
+      let release = await Release.find({});
+      await res.status(200).json({
+        msg: "successful",
+        data: release,
+      });
+    } catch (error) {
+      console.log({ error });
+      await res.status(401).json({
+        msg: "release creation unsuccessful",
+      });
+    }
+  },
+
   async GetUserRelease(req, res) {
     try {
       let { _id } = req.decoded;
@@ -88,7 +104,7 @@ module.exports = {
       await Release.findByIdAndDelete(req.params.id);
       await Task.deleteMany({ creator: _id });
       await res.status(200).json({
-        msg: "releases has been deleted",
+        msg: "release has been deleted",
       });
     } catch (error) {
       res.status(400).send({

@@ -10,7 +10,7 @@ module.exports = function (callback, inputs) {
           host: REDIS_HOST,
         },
       });
-
+      console.log({ inputs });
       macineQueue.add({
         machine: inputs.index + 1,
         inputs: [...inputs.input.inputs],
@@ -18,6 +18,7 @@ module.exports = function (callback, inputs) {
 
       done = "Job Sent";
     } catch (error) {
+      console.log({ error });
       done = "Job Failed";
     } finally {
       await callback(null, done);

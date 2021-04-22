@@ -15,7 +15,7 @@ module.exports.createReleaseValidator = joi.object().keys({
     .required(),
   countdown: joi
     .number()
-    .min(1)
+    .min(0)
     .required(),
   dueDate: joi.date()
 });

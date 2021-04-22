@@ -1,11 +1,29 @@
 const { model, Schema } = require("mongoose");
 const TaskModel = new Schema(
   {
+    product_name: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    card: {
+      type: Schema.Types.ObjectId,
+    },
+    billingAddress: {
+      type: Schema.Types.ObjectId,
+    },
+    shippingAddress: {
+      type: Schema.Types.ObjectId,
+    },
     release: {
       type: Schema.Types.ObjectId,
     },
     creator: {
       type: Schema.Types.ObjectId,
+    },
+    size: {
+      type: String,
+      trim: true,
     },
     email: {
       type: String,

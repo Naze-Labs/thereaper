@@ -11,6 +11,6 @@ module.exports = function Splitter(servers) {
   }
   total_servers = total_servers
     .filter((data) => data.length > 0)
-    .map((data) => ({ servers: data }));
+    .map((data) => ({ inputs: data }));
   return total_servers;
 };
