@@ -1,0 +1,35 @@
+
+<--- Last few GCs --->
+ =[11572:00000148A174DDA0]   136235 ms: Mark-sweep (reduce) 4095.9 (4102.3) -> 4095.7 (4104.0) MB, 4411.8 / 0.0 ms  (+ 120.6 ms in 17 steps since start of marking, biggest step 41.8 ms, walltime since start of marking 4558 ms) (average mu = 0.142, current m[11572:00000148A174DDA0]   140872 ms: Mark-sweep (reduce) 4096.7 (4106.0) ->
+4096.5 (4107.0) MB, 4513.9 / 0.0 ms  (+ 98.7 ms in 16 steps since start of marking, biggest step 37.1 ms, walltime since start of marking 4637 ms) (average mu = 0.075, current mu
+
+<--- JS stacktrace --->
+
+FATAL ERROR: MarkCompactCollector: young object promotion failed Allocation failed - JavaScript heap out of memory
+ 1: 00007FF70497052F napi_wrap+109311
+ 2: 00007FF704915256 v8::internal::OrderedHashTable<v8::internal::OrderedHashSet,1>::NumberOfElementsOffset+33302
+ 3: 00007FF704916026 node::OnFatalError+294
+ 4: 00007FF7051E163E v8::Isolate::ReportExternalAllocationLimitReached+94
+ 5: 00007FF7051C64BD v8::SharedArrayBuffer::Externalize+781
+ 6: 00007FF70507094C v8::internal::Heap::EphemeronKeyWriteBarrierFromCode+1516
+ 7: 00007FF70505B58B v8::internal::NativeContextInferrer::Infer+59243
+ 8: 00007FF705040ABF v8::internal::MarkingWorklists::SwitchToContextSlow+57327
+ 9: 00007FF70505470B v8::internal::NativeContextInferrer::Infer+30955
+10: 00007FF70504B82D v8::internal::MarkCompactCollector::EnsureSweepingCompleted+6269
+11: 00007FF70505395E v8::internal::NativeContextInferrer::Infer+27454
+12: 00007FF7050578EB v8::internal::NativeContextInferrer::Infer+43723
+13: 00007FF705061142 v8::internal::ItemParallelJob::Task::RunInternal+18
+14: 00007FF7050610D1 v8::internal::ItemParallelJob::Run+641
+15: 00007FF7050349D3 v8::internal::MarkingWorklists::SwitchToContextSlow+7939
+16: 00007FF70504BCDC v8::internal::MarkCompactCollector::EnsureSweepingCompleted+7468
+17: 00007FF70504A524 v8::internal::MarkCompactCollector::EnsureSweepingCompleted+1396
+18: 00007FF705048088 v8::internal::MarkingWorklists::SwitchToContextSlow+87480
+19: 00007FF7050766D1 v8::internal::Heap::LeftTrimFixedArray+929
+20: 00007FF7050787B5 v8::internal::Heap::PageFlagsAreConsistent+789
+21: 00007FF70506DA61 v8::internal::Heap::CollectGarbage+2033
+22: 00007FF70506BC65 v8::internal::Heap::AllocateExternalBackingStore+1317
+23: 00007FF70508C057 v8::internal::Factory::NewFillerObject+183
+24: 00007FF704DBC0B1 v8::internal::interpreter::JumpTableTargetOffsets::iterator::operator=+1409
+25: 00007FF705269FED v8::internal::SetupIsolateDelegate::SetupHeap+463949
+26: 00000255DE01EB4F
+[nodemon] app crashed - waiting for file changes before starting...

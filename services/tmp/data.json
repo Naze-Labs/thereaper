@@ -1,0 +1,48 @@
+[
+  {
+    "index": 0,
+    "input": {
+      "inputs": [
+        {
+          "status": "failed",
+          "_id": "60688e60f75cf3287ca513af",
+          "creator": "606888c4b5bda226e0f6cdb6",
+          "release": "60688c7cea5db90448ee5700",
+          "email": "seunchief@gmail.com",
+          "password": "seun1234.",
+          "item_url": "https://www.newegg.com/skytecg-st-arch-3600-1650-500gssd-archangel-gaming-computer/p/1VK-005B-000J6?Item=9SIA08CDS04026&cm_sp=Homepage_dailydeals-_-P1_9SIA08CDS04026-_-04042021",
+          "ccv": 1,
+          "createdAt": "2021-04-03T15:48:48.308Z",
+          "updatedAt": "2021-04-04T21:47:56.718Z",
+          "__v": 0,
+          "dueDate": "2021-04-05T12:35:00.367Z",
+          "store": "NewEgg",
+          "countdown": 200
+        }
+      ]
+    }
+  },
+  {
+    "Bot": "2",
+    "response": {
+      "result": [
+        {
+          "status": "failed",
+          "_id": "6069b7b7cd7bed2a30680c0a",
+          "creator": "606888c4b5bda226e0f6cdb6",
+          "release": "6069ab8877b38d17e49ed5cd",
+          "email": "seunchief@gmail.com",
+          "password": "seun1234.",
+          "item_url": "https://www.newegg.com/skytecg-st-arch-3600-1650-500gssd-archangel-gaming-computer/p/1VK-005B-000J6?Item=9SIA08CDS04026&cm_sp=Homepage_dailydeals-_-P1_9SIA08CDS04026-_-04042021",
+          "ccv": 1,
+          "createdAt": "2021-04-04T12:57:27.710Z",
+          "updatedAt": "2021-04-04T21:46:40.231Z",
+          "__v": 0,
+          "dueDate": "2021-04-05T12:35:00.367Z",
+          "store": "NewEgg",
+          "countdown": 200
+        }
+      ]
+    }
+  }
+]
